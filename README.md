@@ -1,6 +1,11 @@
 Overview
 ========
 
+Info
+-------------
+
+This is a fork of Mongoid 2.7. 
+
 About Mongoid
 -------------
 

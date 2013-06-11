@@ -5,7 +5,7 @@ $:.unshift lib unless $:.include?(lib)
 require "mongoid/version"
 
 Gem::Specification.new do |s|
-  s.name        = "mongoid"
+  s.name        = "mongoid2"
   s.version     = Mongoid::VERSION
   s.platform    = Gem::Platform::RUBY
   s.authors     = ["Durran Jordan"]
