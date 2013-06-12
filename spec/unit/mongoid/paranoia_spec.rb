@@ -71,7 +71,7 @@ describe Mongoid::Paranoia do
       collection.expects(:update).with(
         { "_id" => post.id },
         { "$set" => { "deleted_at" => time } },
-        { :safe => false }
+        { :w => 0 }
       ).returns(true)
       post.destroy
     end
@@ -80,7 +80,7 @@ describe Mongoid::Paranoia do
       collection.expects(:update).with(
         { "_id" => post.id },
         { "$set" => { "deleted_at" => time } },
-        { :safe => false }
+        { :w => 0 }
       ).returns(true)
       post.destroy
       post.should be_destroyed
@@ -106,7 +106,7 @@ describe Mongoid::Paranoia do
       collection.expects(:update).with(
         { "_id" => post.id },
         { "$set" => { "deleted_at" => time } },
-        { :safe => false }
+        { :w => 0 }
       ).returns(true)
       post.remove
     end
@@ -115,7 +115,7 @@ describe Mongoid::Paranoia do
       collection.expects(:update).with(
         { "_id" => post.id },
         { "$set" => { "deleted_at" => time } },
-        { :safe => false }
+        { :w => 0 }
       ).returns(true)
       post.remove
       post.should be_destroyed

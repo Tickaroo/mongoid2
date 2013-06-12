@@ -38,7 +38,7 @@ describe Mongoid::Persistence::Operations::Remove do
 
     it "sets the options" do
       remove.options.should ==
-        { :safe => Mongoid.persist_in_safe_mode }
+        { :w => Mongoid.persist_in_safe_mode ? 1 : 0 }
     end
   end
 
@@ -48,7 +48,7 @@ describe Mongoid::Persistence::Operations::Remove do
       lambda {
         collection.expects(:remove).with(
           { :_id => document.id },
-          :safe => false
+          :w => 0
         ).returns(true)
       }
     end

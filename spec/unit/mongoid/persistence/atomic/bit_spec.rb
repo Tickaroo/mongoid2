@@ -56,7 +56,7 @@ describe Mongoid::Persistence::Atomic::Bit do
           collection.expects(:update).with(
             person.atomic_selector,
             { "$bit" => { "age" => { :and => 13 } } },
-            :safe => false
+            :w => 0
           )
         end
 
@@ -92,7 +92,7 @@ describe Mongoid::Persistence::Atomic::Bit do
           collection.expects(:update).with(
             person.atomic_selector,
             { "$bit" => { "age" => { :or => 13 } } },
-            :safe => false
+            :w => 0
           )
         end
 
@@ -135,7 +135,7 @@ describe Mongoid::Persistence::Atomic::Bit do
           collection.expects(:update).with(
             person.atomic_selector,
             { "$bit" => { "age" => { :and => 13, :or => 10 } } },
-            :safe => false
+            :w => 0
           )
         end
 

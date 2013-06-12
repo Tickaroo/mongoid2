@@ -38,7 +38,7 @@ describe Mongoid::Persistence::Operations::Insert do
 
     it "sets the options" do
       insert.options.should ==
-        { :safe => Mongoid.persist_in_safe_mode }
+        { :w => Mongoid.persist_in_safe_mode ? 1 : 0 }
     end
   end
 
@@ -48,7 +48,7 @@ describe Mongoid::Persistence::Operations::Insert do
       lambda {
         collection.expects(:insert).with(
           document.raw_attributes,
-          :safe => false
+          :w => 0
         ).returns("Object")
       }
     end
@@ -58,7 +58,7 @@ describe Mongoid::Persistence::Operations::Insert do
         collection.expects(:update).with(
           { "_id" => document.id },
           { "addresses" => { "$push" => address.raw_attributes } },
-          :safe => false
+          :w => 0
         ).returns("Object")
       }
     end

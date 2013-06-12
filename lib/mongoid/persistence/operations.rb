@@ -43,7 +43,7 @@ module Mongoid #:nodoc:
       # Instantiate the new persistence operation.
       #
       # @example Create the operation.
-      #   Operation.new(document, { :safe => true }, { "field" => "value" })
+      #   Operation.new(document, { :w => 1 }, { "field" => "value" })
       #
       # @param [ Document ] document The document to persist.
       # @param [ Hash ] options The persistence options.

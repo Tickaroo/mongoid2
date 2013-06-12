@@ -83,7 +83,7 @@ module Mongoid #:nodoc
     # @example Insert documents.
     #   collection.insert(
     #     { "field" => "value" },
-    #     :safe => true
+    #     :w => 1
     #   )
     #
     # @param [ Hash, Array<Hash> ] documents A single document or multiples.
@@ -133,7 +133,7 @@ module Mongoid #:nodoc
     #   collection.update(
     #     { "_id" => BSON::OjectId.new },
     #     { "$push" => { "addresses" => { "_id" => "street" } } },
-    #     :safe => true
+    #     :w => 1
     #   )
     #
     # @param [ Hash ] selector The document selector.

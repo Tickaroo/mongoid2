@@ -33,7 +33,7 @@ describe Mongoid::Persistence::Operations::Embedded::Remove do
         collection.expects(:update).with(
           { "_id" => document.id, "addresses._id" => address.id },
           { "$pull" => { "addresses.0.locations" => { "_id" => location.id } } },
-          :safe => false
+          :w => 0
         ).returns("Object")
       }
     end
@@ -43,7 +43,7 @@ describe Mongoid::Persistence::Operations::Embedded::Remove do
         collection.expects(:update).with(
           { "_id" => document.id },
           { "$pull" => { "addresses" => { "_id" => address.id } } },
-          :safe => false
+          :w => 0
         ).returns("Object")
       }
     end
@@ -53,7 +53,7 @@ describe Mongoid::Persistence::Operations::Embedded::Remove do
         collection.expects(:update).with(
           { "_id" => document.id },
           { "$unset" => { "email" => true } },
-          :safe => false
+          :w => 0
         ).returns("Object")
       }
     end

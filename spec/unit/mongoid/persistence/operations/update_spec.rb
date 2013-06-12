@@ -53,7 +53,7 @@ describe Mongoid::Persistence::Operations::Update do
         collection.expects(:update).with(
           { "_id" => document.id },
           { "$set" => document.setters },
-          :safe => false
+          :w => 0
         ).returns("Object")
       }
     end
@@ -63,7 +63,7 @@ describe Mongoid::Persistence::Operations::Update do
         collection.expects(:update).with(
           { "_id" => document.id, "addresses._id" => address.id },
           { "$set" => address.setters },
-          :safe => false
+          :w => 0
         ).returns("Object")
       }
     end
@@ -73,7 +73,7 @@ describe Mongoid::Persistence::Operations::Update do
         collection.expects(:update).with(
           { "_id" => root_category.id, "categories._id" => category.id, "categories.0.categories._id" => leaf_category.id },
           { "$set" => leaf_category.setters },
-          :safe => false
+          :w => 0
         ).returns("Object")
       }
     end

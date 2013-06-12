@@ -28,7 +28,7 @@ describe Mongoid::Persistence::Atomic::Rename do
 
       before do
         collection.expects(:update).with(
-          person.atomic_selector, { "$rename" => { "age" => "years" } }, { :safe => false }
+          person.atomic_selector, { "$rename" => { "age" => "years" } }, { :w => 0 }
         )
       end
 

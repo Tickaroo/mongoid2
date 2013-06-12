@@ -168,7 +168,7 @@ describe Mongoid::Persistence::Operations do
     context "safe is true" do
 
       let(:options) do
-        { :safe => true }
+        { :w => 1 }
       end
 
       let(:opts) do
@@ -183,7 +183,7 @@ describe Mongoid::Persistence::Operations do
     context "when safe is a hash" do
 
       let(:options) do
-        { :safe => { :w => 2 } }
+        { :w => 2 }
       end
 
       let(:opts) do
@@ -198,7 +198,7 @@ describe Mongoid::Persistence::Operations do
     context "when safe is false" do
 
       let(:options) do
-        { :safe => false }
+        { :w => 0 }
       end
 
       let(:opts) do
@@ -230,8 +230,8 @@ describe Mongoid::Persistence::Operations do
           Mongoid.persist_in_safe_mode = false
         end
 
-        it "returns :safe => true" do
-          opts.should eq({ :safe => true })
+        it "returns :w => 1" do
+          opts.should eq({ :w => 1 })
         end
       end
 
@@ -241,8 +241,8 @@ describe Mongoid::Persistence::Operations do
           Mongoid.persist_in_safe_mode = false
         end
 
-        it "returns :safe => false" do
-          opts.should eq({ :safe => false })
+        it "returns :w => 0" do
+          opts.should eq({ :w => 0 })
         end
       end
     end

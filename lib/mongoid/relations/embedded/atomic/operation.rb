@@ -14,7 +14,7 @@ module Mongoid #:nodoc:
           #   set.consume(
           #     { "_id" => BSON::ObjectId.new },
           #     { "$push" => { "addresses" => { "_id" => "street" } } },
-          #     { :multi => false, :safe => true }
+          #     { :multi => false, :w => 1 }
           #   )
           #
           # @param [ Hash ] selector The document selector.
@@ -22,7 +22,7 @@ module Mongoid #:nodoc:
           # @param [ Hash ] options The persistence options.
           #
           # @option options [ true, false ] :multi Persist multiple at once.
-          # @option options [ true, false ] :safe Persist in safe mode.
+          # @option options [ Integer ] :w Set default number of nodes to which a write should be acknowledged.
           #
           # @since 2.0.0
           def consume(selector, operations, options = {})

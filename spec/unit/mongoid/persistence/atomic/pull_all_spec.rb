@@ -31,7 +31,7 @@ describe Mongoid::Persistence::Atomic::PullAll do
         collection.expects(:update).with(
           person.atomic_selector,
           { "$pullAll" => { "aliases" => [ "008", "009" ] } },
-          { :safe => false }
+          { :w => 0 }
         )
       end
 

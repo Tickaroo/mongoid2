@@ -35,7 +35,7 @@ describe Mongoid::Persistence::Atomic::AddToSet do
             collection.expects(:update).with(
               person.atomic_selector,
               { "$addToSet" => { "aliases" => "Bond" } },
-              :safe => false
+              :w => 0
             )
           end
 
@@ -67,7 +67,7 @@ describe Mongoid::Persistence::Atomic::AddToSet do
             collection.expects(:update).with(
               person.atomic_selector,
               { "$addToSet" => { "aliases" => { "$each" => [ "Bond", "James" ] }}},
-              :safe => false
+              :w => 0
             )
           end
 
@@ -106,7 +106,7 @@ describe Mongoid::Persistence::Atomic::AddToSet do
             collection.expects(:update).with(
               person.atomic_selector,
               { "$addToSet" => { "aliases" => "Bond" } },
-              :safe => false
+              :w => 0
             )
           end
 
@@ -138,7 +138,7 @@ describe Mongoid::Persistence::Atomic::AddToSet do
             collection.expects(:update).with(
               person.atomic_selector,
               { "$addToSet" => { "aliases" => { "$each" => [ "Bond", "James" ] }}},
-              :safe => false
+              :w => 0
             )
           end
 
@@ -178,7 +178,7 @@ describe Mongoid::Persistence::Atomic::AddToSet do
           collection.expects(:update).with(
             person.atomic_selector,
             { "$addToSet" => { "aliases" => "Bond" } },
-            :safe => false
+            :w => 0
           )
         end
 
@@ -210,7 +210,7 @@ describe Mongoid::Persistence::Atomic::AddToSet do
           collection.expects(:update).with(
             person.atomic_selector,
             { "$addToSet" => { "aliases" => { "$each" => [ "Bond", "James" ] }}},
-            :safe => false
+            :w => 0
           )
         end
 

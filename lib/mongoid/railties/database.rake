@@ -124,7 +124,7 @@ namespace :db do
         collection.find({}, :timeout => false, :sort => "_id") do |cursor|
            cursor.each do |doc|
             new_doc = convert_ids(doc)
-            new_collection.insert(new_doc, :safe => true)
+            new_collection.insert(new_doc, :w => 1)
           end
         end
 

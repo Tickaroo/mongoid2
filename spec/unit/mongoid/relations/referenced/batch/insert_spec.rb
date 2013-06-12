@@ -13,7 +13,7 @@ describe Mongoid::Relations::Referenced::Batch::Insert do
     end
 
     let(:options) do
-      { :safe => true }
+      { :w => 1 }
     end
 
     before do

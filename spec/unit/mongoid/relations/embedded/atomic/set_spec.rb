@@ -21,7 +21,7 @@ describe Mongoid::Relations::Embedded::Atomic::Set do
         end
 
         let(:options) do
-          { :safe => true, :multi => false }
+          { :w => 1, :multi => false }
         end
 
         before do
@@ -61,7 +61,7 @@ describe Mongoid::Relations::Embedded::Atomic::Set do
         end
 
         let(:options) do
-          { :safe => true, :multi => false }
+          { :w => 1, :multi => false }
         end
 
         before do
@@ -104,7 +104,7 @@ describe Mongoid::Relations::Embedded::Atomic::Set do
         end
 
         let(:options) do
-          { :safe => true, :multi => false }
+          { :w => 1, :multi => false }
         end
 
         before do
@@ -144,7 +144,7 @@ describe Mongoid::Relations::Embedded::Atomic::Set do
         end
 
         let(:options) do
-          { :safe => true, :multi => false }
+          { :w => 1, :multi => false }
         end
 
         before do
@@ -187,7 +187,7 @@ describe Mongoid::Relations::Embedded::Atomic::Set do
         end
 
         let(:options) do
-          { :safe => true, :multi => false }
+          { :w => 1, :multi => false }
         end
 
         before do
@@ -227,7 +227,7 @@ describe Mongoid::Relations::Embedded::Atomic::Set do
         end
 
         let(:options) do
-          { :safe => true, :multi => false }
+          { :w => 1, :multi => false }
         end
 
         before do

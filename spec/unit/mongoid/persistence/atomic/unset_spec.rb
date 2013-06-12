@@ -28,7 +28,7 @@ describe Mongoid::Persistence::Atomic::Unset do
 
       before do
         collection.expects(:update).with(
-          person.atomic_selector, { "$unset" => { "age" => 1 } }, { :safe => false }
+          person.atomic_selector, { "$unset" => { "age" => 1 } }, { :w => 0 }
         )
       end
 

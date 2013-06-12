@@ -104,7 +104,7 @@ describe Mongoid::Persistence do
         cursor.expects(:count).returns(30)
         collection.expects(:remove).with(
           { :field => "value" },
-          :safe => Mongoid.persist_in_safe_mode
+          :w => Mongoid.persist_in_safe_mode ? 1 : 0
         )
       end
 
@@ -131,7 +131,7 @@ describe Mongoid::Persistence do
         Person.expects(:collection).twice.returns(collection)
         collection.expects(:find).with({}).returns(cursor)
         cursor.expects(:count).returns(30)
-        collection.expects(:remove).with({}, :safe => Mongoid.persist_in_safe_mode)
+        collection.expects(:remove).with({}, :w => Mongoid.persist_in_safe_mode ? 1 : 0)
       end
 
       it "removes all documents from the collection" do

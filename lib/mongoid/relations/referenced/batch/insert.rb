@@ -12,12 +12,12 @@ module Mongoid #:nodoc:
           # now being deferred to later in favor of a single batch insert.
           #
           # @example Consume the operation.
-          #   set.consume({ "field" => "value" }, { :safe => true })
+          #   set.consume({ "field" => "value" }, { :w => 1 })
           #
           # @param [ Hash ] document The document to collect.
           # @param [ Hash ] options The persistence options.
           #
-          # @option options [ true, false ] :safe Persist in safe mode.
+          # @option options [ Integer ] :w Set default number of nodes to which a write should be acknowledged.
           #
           # @since 2.0.2, batch-relational-insert
           def consume(document, options = {})

@@ -28,7 +28,7 @@ describe Mongoid::Safety do
         collection.expects(:update).with(
           { "_id" => person.id },
           { "$addToSet" => { "aliases" => "Bond" } },
-          :safe => { :w => 2 }
+          :w => 2
         )
         person.safely(:w => 2).add_to_set(:aliases, "Bond")
       end
@@ -44,7 +44,7 @@ describe Mongoid::Safety do
         collection.expects(:update).with(
           { "_id" => person.id },
           { "$addToSet" => { "aliases" => "Bond" } },
-          :safe => true
+          :w => 1
         )
         person.safely.add_to_set(:aliases, "Bond")
       end
@@ -67,7 +67,7 @@ describe Mongoid::Safety do
         collection.expects(:update).with(
           { "_id" => person.id },
           { "$bit" => { "age" => { :and => 12 } } },
-          :safe => { :w => 2 }
+          :w => 2
         )
         person.safely(:w => 2).bit(:age, { :and => 12 })
       end
@@ -83,7 +83,7 @@ describe Mongoid::Safety do
         collection.expects(:update).with(
           { "_id" => person.id },
           { "$bit" => { "age" => { :and => 12 } } },
-          :safe => true
+          :w => 1
         )
         person.safely.bit(:age, { :and => 12 })
       end
@@ -105,7 +105,7 @@ describe Mongoid::Safety do
       before do
         collection.expects(:insert).with(
           { "_id" => id, "name" => "John" },
-          :safe => { :w => 2 }
+          :w => 2
         )
         Acolyte.safely(:w => 2).create(:id => id, :name => "John")
       end
@@ -120,7 +120,7 @@ describe Mongoid::Safety do
       before do
         collection.expects(:insert).with(
           { "_id" => id, "name" => "John" },
-          :safe => true
+          :w => 1
         )
         Acolyte.safely.create(:id => id, :name => "John")
       end
@@ -142,7 +142,7 @@ describe Mongoid::Safety do
       before do
         collection.expects(:insert).with(
           { "_id" => id, "name" => "John" },
-          :safe => { :w => 2 }
+          :w => 2
         )
         Acolyte.safely(:w => 2).create!(:id => id, :name => "John")
       end
@@ -157,7 +157,7 @@ describe Mongoid::Safety do
       before do
         collection.expects(:insert).with(
           { "_id" => id, "name" => "John" },
-          :safe => true
+          :w => 1
         )
         Acolyte.safely.create!(:id => id, :name => "John")
       end
@@ -177,7 +177,7 @@ describe Mongoid::Safety do
     context "when providing options" do
 
       before do
-        collection.expects(:remove).with({ :_id => person.id }, :safe => { :fsync => true })
+        collection.expects(:remove).with({ :_id => person.id }, :fsync => true)
         person.safely(:fsync => true).delete
       end
 
@@ -189,7 +189,7 @@ describe Mongoid::Safety do
     context "when not providing options" do
 
       before do
-        collection.expects(:remove).with({ :_id => person.id }, :safe => true)
+        collection.expects(:remove).with({ :_id => person.id }, :w => 1)
         person.safely.delete
       end
 
@@ -205,7 +205,7 @@ describe Mongoid::Safety do
 
       before do
         collection.expects(:find).with({}).returns([])
-        collection.expects(:remove).with({}, :safe => { :w => 2 })
+        collection.expects(:remove).with({}, :w => 2)
         Person.safely(:w => 2).delete_all
       end
 
@@ -218,7 +218,7 @@ describe Mongoid::Safety do
 
       before do
         collection.expects(:find).with({}).returns([])
-        collection.expects(:remove).with({}, :safe => true)
+        collection.expects(:remove).with({}, :w => 1)
         Person.safely.delete_all
       end
 
@@ -237,7 +237,7 @@ describe Mongoid::Safety do
     context "when providing options" do
 
       before do
-        collection.expects(:remove).with({ :_id => person.id }, :safe => { :fsync => true })
+        collection.expects(:remove).with({ :_id => person.id }, :fsync => true)
         person.safely(:fsync => true).destroy
       end
 
@@ -249,7 +249,7 @@ describe Mongoid::Safety do
     context "when not providing options" do
 
       before do
-        collection.expects(:remove).with({ :_id => person.id }, :safe => true)
+        collection.expects(:remove).with({ :_id => person.id }, :w => 1)
         person.safely.destroy
       end
 
@@ -269,7 +269,7 @@ describe Mongoid::Safety do
 
       before do
         collection.expects(:find).with({}, {}).twice.returns([ person ])
-        collection.expects(:remove).with({ :_id => person.id }, :safe => { :fsync => true })
+        collection.expects(:remove).with({ :_id => person.id }, :fsync => true)
         Person.safely(:fsync => true).destroy_all
       end
 
@@ -282,7 +282,7 @@ describe Mongoid::Safety do
 
       before do
         collection.expects(:find).with({}, {}).twice.returns([ person ])
-        collection.expects(:remove).with({ :_id => person.id }, :safe => true)
+        collection.expects(:remove).with({ :_id => person.id }, :w => 1)
         Person.safely.destroy_all
       end
 
@@ -304,7 +304,7 @@ describe Mongoid::Safety do
         collection.expects(:update).with(
           { "_id" => person.id },
           { "$inc" => { "age" => 2 } },
-          :safe => { :w => 2 }
+          :w => 2
         )
         person.safely(:w => 2).inc(:age, 2)
       end
@@ -320,7 +320,7 @@ describe Mongoid::Safety do
         collection.expects(:update).with(
           { "_id" => person.id },
           { "$inc" => { "age" => 2 } },
-          :safe => true
+          :w => 1
         )
         person.safely.inc(:age, 2)
       end
@@ -342,7 +342,7 @@ describe Mongoid::Safety do
       before do
         collection.expects(:insert).with(
           { "_id" => acolyte.id, "name" => "John" },
-          :safe => { :w => 2 }
+          :w => 2
         )
         acolyte.safely(:w => 2).insert
       end
@@ -357,7 +357,7 @@ describe Mongoid::Safety do
       before do
         collection.expects(:insert).with(
           { "_id" => acolyte.id, "name" => "John" },
-          :safe => true
+          :w => 1
         )
         acolyte.safely.insert
       end
@@ -380,7 +380,7 @@ describe Mongoid::Safety do
         collection.expects(:update).with(
           { "_id" => person.id },
           { "$pop" => { "aliases" => 2 } },
-          :safe => { :w => 2 }
+          :w => 2
         )
         person.safely(:w => 2).pop(:aliases, 2)
       end
@@ -396,7 +396,7 @@ describe Mongoid::Safety do
         collection.expects(:update).with(
           { "_id" => person.id },
           { "$pop" => { "aliases" => 2 } },
-          :safe => true
+          :w => 1
         )
         person.safely.pop(:aliases, 2)
       end
@@ -419,7 +419,7 @@ describe Mongoid::Safety do
         collection.expects(:update).with(
           { "_id" => person.id },
           { "$pull" => { "aliases" => "Bond" } },
-          :safe => { :w => 2 }
+          :w => 2
         )
         person.safely(:w => 2).pull(:aliases, "Bond")
       end
@@ -435,7 +435,7 @@ describe Mongoid::Safety do
         collection.expects(:update).with(
           { "_id" => person.id },
           { "$pull" => { "aliases" => "Bond" } },
-          :safe => true
+          :w => 1
         )
         person.safely.pull(:aliases, "Bond")
       end
@@ -458,7 +458,7 @@ describe Mongoid::Safety do
         collection.expects(:update).with(
           { "_id" => person.id },
           { "$pullAll" => { "aliases" => [ "Bond" ] } },
-          :safe => { :w => 2 }
+          :w => 2
         )
         person.safely(:w => 2).pull_all(:aliases, [ "Bond" ])
       end
@@ -474,7 +474,7 @@ describe Mongoid::Safety do
         collection.expects(:update).with(
           { "_id" => person.id },
           { "$pullAll" => { "aliases" => [ "Bond" ] } },
-          :safe => true
+          :w => 1
         )
         person.safely.pull_all(:aliases, [ "Bond" ])
       end
@@ -497,7 +497,7 @@ describe Mongoid::Safety do
         collection.expects(:update).with(
           { "_id" => person.id },
           { "$push" => { "aliases" => "Bond" } },
-          :safe => { :w => 2 }
+          :w => 2
         )
         person.safely(:w => 2).push(:aliases, "Bond")
       end
@@ -513,7 +513,7 @@ describe Mongoid::Safety do
         collection.expects(:update).with(
           { "_id" => person.id },
           { "$push" => { "aliases" => "Bond" } },
-          :safe => true
+          :w => 1
         )
         person.safely.push(:aliases, "Bond")
       end
@@ -536,7 +536,7 @@ describe Mongoid::Safety do
         collection.expects(:update).with(
           { "_id" => person.id },
           { "$pushAll" => { "aliases" => [ "Bond" ] } },
-          :safe => { :w => 2 }
+          :w => 2
         )
         person.safely(:w => 2).push_all(:aliases, [ "Bond" ])
       end
@@ -552,7 +552,7 @@ describe Mongoid::Safety do
         collection.expects(:update).with(
           { "_id" => person.id },
           { "$pushAll" => { "aliases" => [ "Bond" ] } },
-          :safe => true
+          :w => 1
         )
         person.safely.push_all(:aliases, [ "Bond" ])
       end
@@ -575,7 +575,7 @@ describe Mongoid::Safety do
         collection.expects(:update).with(
           { "_id" => person.id },
           { "$rename" => { "aliases" => "handles" } },
-          :safe => { :w => 2 }
+          :w => 2
         )
         person.safely(:w => 2).rename(:aliases, :handles)
       end
@@ -591,7 +591,7 @@ describe Mongoid::Safety do
         collection.expects(:update).with(
           { "_id" => person.id },
           { "$rename" => { "aliases" => "handles" } },
-          :safe => true
+          :w => 1
         )
         person.safely.rename(:aliases, :handles)
       end
@@ -621,7 +621,7 @@ describe Mongoid::Safety do
         collection.expects(:update).with(
           { "_id" => acolyte.id },
           { "$set" => { "name" => "John" } },
-          :safe => { :w => 2 }
+          :w => 2
         )
         acolyte.safely(:w => 2).save
       end
@@ -637,7 +637,7 @@ describe Mongoid::Safety do
         collection.expects(:update).with(
           { "_id" => acolyte.id },
           { "$set" => { "name" => "John" } },
-          :safe => true
+          :w => 1
         )
         acolyte.safely.save
       end
@@ -667,7 +667,7 @@ describe Mongoid::Safety do
         collection.expects(:update).with(
           { "_id" => acolyte.id },
           { "$set" => { "name" => "John" } },
-          :safe => { :w => 2 }
+          :w => 2
         )
         acolyte.safely(:w => 2).save!
       end
@@ -683,7 +683,7 @@ describe Mongoid::Safety do
         collection.expects(:update).with(
           { "_id" => acolyte.id },
           { "$set" => { "name" => "John" } },
-          :safe => true
+          :w => 1
         )
         acolyte.safely.save!
       end
@@ -706,7 +706,7 @@ describe Mongoid::Safety do
         collection.expects(:update).with(
           { "_id" => person.id },
           { "$unset" => { "aliases" => 1 } },
-          :safe => { :w => 2 }
+          :w => 2
         )
         person.safely(:w => 2).unset(:aliases)
       end
@@ -722,7 +722,7 @@ describe Mongoid::Safety do
         collection.expects(:update).with(
           { "_id" => person.id },
           { "$unset" => { "aliases" => 1 } },
-          :safe => true
+          :w => 1
         )
         person.safely.unset(:aliases)
       end
@@ -748,7 +748,7 @@ describe Mongoid::Safety do
         collection.expects(:update).with(
           { "_id" => acolyte.id },
           { "$set" => { "name" => "John" } },
-          :safe => { :w => 2 }
+          :w => 2
         )
         acolyte.safely(:w => 2).update_attributes(:name => "John")
       end
@@ -764,7 +764,7 @@ describe Mongoid::Safety do
         collection.expects(:update).with(
           { "_id" => acolyte.id },
           { "$set" => { "name" => "John" } },
-          :safe => true
+          :w => 1
         )
         acolyte.safely.update_attributes(:name => "John")
       end
@@ -790,7 +790,7 @@ describe Mongoid::Safety do
         collection.expects(:update).with(
           { "_id" => acolyte.id },
           { "$set" => { "name" => "John" } },
-          :safe => { :w => 2 }
+          :w => 2
         )
         acolyte.safely(:w => 2).update_attributes!(:name => "John")
       end
@@ -806,7 +806,7 @@ describe Mongoid::Safety do
         collection.expects(:update).with(
           { "_id" => acolyte.id },
           { "$set" => { "name" => "John" } },
-          :safe => true
+          :w => 1
         )
         acolyte.safely.update_attributes!(:name => "John")
       end

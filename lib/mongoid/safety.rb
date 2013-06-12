@@ -21,9 +21,10 @@ module Mongoid #:nodoc:
     # @option options [ Integer ] :wtimeout Time to wait for return from all
     #   nodes.
     # @option options [ true, false ] :fsync Should a fsync occur.
+    # @option options [ true, false ] :j Set journal acknowledgement
     #
     # @return [ Proxy ] The safety proxy.
-    def safely(safety = true)
+    def safely(safety = {:w => 1})
       tap { Threaded.safety_options = safety }
     end
 
@@ -36,7 +37,7 @@ module Mongoid #:nodoc:
     #
     # @return [ Proxy ] The safety proxy.
     def unsafely
-      tap { Threaded.safety_options = false }
+      tap { Threaded.safety_options = {:w => 0} }
     end
 
     class << self
@@ -45,7 +46,7 @@ module Mongoid #:nodoc:
       # from anywhere in the framework.
       #
       # @example Get the options with safe mode included.
-      #   Safety.merge_safety_options({ :safe => false })
+      #   Safety.merge_safety_options({ :w => 2 })
       #
       # @param [ Hash ] options The persistence options.
       #
@@ -54,14 +55,13 @@ module Mongoid #:nodoc:
       # @since 2.1.0
       def merge_safety_options(options = {})
         options ||= {}
-        return options if options[:safe]
-
+        
         unless Threaded.safety_options.nil?
           safety = Threaded.safety_options
         else
-          safety = Mongoid.persist_in_safe_mode
+          safety = Mongoid.persist_in_safe_mode ? {:w => 1} : {:w => 0}
         end
-        options.merge!({ :safe => safety })
+        safety.merge!(options)
       end
     end
 
@@ -83,7 +83,7 @@ module Mongoid #:nodoc:
       # @option options [ true, false ] :fsync Should a fsync occur.
       #
       # @return [ Proxy ] The safety proxy.
-      def safely(safety = true)
+      def safely(safety = {:w => 1})
         tap { Threaded.safety_options = safety }
       end
 
@@ -98,7 +98,7 @@ module Mongoid #:nodoc:
       #
       # @since 2.3.0
       def unsafely
-        tap { Threaded.safety_options = false }
+        tap { Threaded.safety_options = {:w => 0} }
       end
     end
   end
