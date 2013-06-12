@@ -6,6 +6,11 @@ Info
 
 This is a fork of Mongoid 2.7. 
 
+Changes:
+
+* Update options for write concerns (:safe => true -> :w => 1)
+
+
 About Mongoid
 -------------
 
