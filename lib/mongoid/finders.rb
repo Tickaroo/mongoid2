@@ -11,7 +11,7 @@ module Mongoid #:nodoc:
                         :avg, :desc, :descending, :excludes,
                         :includes, :limit, :max, :min, :not_in, :only,
                         :order_by, :search, :skip, :sum, :without, :where,
-                        :update, :update_all, :near ]
+                        :update, :update_all, :near, :read, :primary, :secondary ]
     delegate *(critera_methods.dup << { :to => :criteria })
 
     # Find all documents that match the given conditions.

@@ -180,7 +180,40 @@ module Mongoid #:nodoc:
         types = [types] unless types.is_a?(Array)
         any_in(:_type => types)
       end
-
+      
+      # Adds a criterion to the +Criteria+ that specifies the 
+      # destination server. 
+      
+      # @example Read from primary.
+      #   criteria.read(:primary)
+      #
+      # @param [ Symbol ] value :primary or :secondary
+      #
+      # @return [ Criteria ] The cloned criteria.
+      def read(value)
+        clone.tap { |crit| crit.options[:read] = value }
+      end
+      
+      # Adds a criterion to the +Criteria+ that specifies primary as
+      # destination server. 
+      # @example Read from primary.
+      #   criteria.primary
+      #
+      # @return [ Criteria ] The cloned criteria.
+      def primary
+        read(:primary)
+      end
+      
+      # Adds a criterion to the +Criteria+ that specifies secondary as
+      # destination server. 
+      # @example Read from primary.
+      #   criteria.primary
+      #
+      # @return [ Criteria ] The cloned criteria.
+      def secondary
+        read(:secondary)
+      end
+      
       private
 
       # Build ordering options from given arguments on given criteria

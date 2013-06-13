@@ -70,4 +70,22 @@ describe Mongoid::Criterion::Optional do
       desc.map(&:title).should eq(titles.reverse)
     end
   end
+  
+  context "#read" do
+    it "should set read to primary" do
+      Book.primary.execute.cursor.read.should eq(:primary)
+    end
+    
+    it "should set read to primary" do
+      Book.read(:primary).execute.cursor.read.should eq(:primary)
+    end
+    
+    it "should set read to secondary" do
+      Book.secondary.execute.cursor.read.should eq(:secondary)
+    end 
+    
+    it "should set read to secondary" do
+      Book.read(:secondary).execute.cursor.read.should eq(:secondary)
+    end 
+  end
 end
