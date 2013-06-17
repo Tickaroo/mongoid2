@@ -63,4 +63,21 @@ describe Mongoid::ReadPreference do
     end
   end
   
+  context "extensions module" do
+    let!(:sportsevent) {Sportsevent.new}
+    
+    it "should set read preference for specific methods" do
+      sportsevent.primary_method.should eq(:primary)
+    end
+    
+    it "should do nothing with other methods" do
+      sportsevent.other_method.should eq(nil)
+    end
+    
+    it "should set read preferences for more methods at once" do
+      sportsevent.multi_1.should eq(:secondary)
+      sportsevent.multi_2.should eq(:secondary)
+    end
+  end
+  
 end
