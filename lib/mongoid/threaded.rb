@@ -135,6 +135,32 @@ module Mongoid #:nodoc:
       Thread.current[:"[mongoid][#{name}]:insert-consumer"]
     end
 
+    # Get the read preference for the current thread.
+    #
+    # @example Get the read preference.
+    #   Threaded.read_preference
+    #
+    # @return [ Symbol ] The current read preference.
+    #
+    # @since 2.1.0
+    def read_preference
+      Thread.current[:"[mongoid]:read-preference"]
+    end
+
+    # Set the read preference on the current thread.
+    #
+    # @example Set the read preference.
+    #   Threaded.read_preference = :primary
+    #
+    # @param [ Symbol ] options The read preference.
+    #
+    # @return [ Symbol ] The read preference.
+    #
+    # @since 2.1.0
+    def read_preference=(preference)
+      Thread.current[:"[mongoid]:read-preference"] = preference
+    end
+
     # Set the insert consumer on the current thread.
     #
     # @example Set the insert consumer.

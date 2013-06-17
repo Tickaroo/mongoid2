@@ -39,6 +39,7 @@ module Mongoid #:nodoc
     #
     # @return [ Cursor ] The results.
     def find(selector = {}, options = {})
+      ReadPreference.merge_options!(options)
       cursor = Mongoid::Cursor.new(klass, self, master(options).find(selector, options))
       if block_given?
         yield cursor; cursor.close
@@ -57,6 +58,7 @@ module Mongoid #:nodoc
     #
     # @return [ Document, nil ] A matching document or nil if none found.
     def find_one(selector = {}, options = {})
+      ReadPreference.merge_options!(options)
       master(options).find_one(selector, options)
     end
 

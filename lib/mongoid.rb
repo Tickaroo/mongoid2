@@ -65,6 +65,7 @@ require "mongoid/named_scope"
 require "mongoid/nested_attributes"
 require "mongoid/observer"
 require "mongoid/persistence"
+require "mongoid/read_preference"
 require "mongoid/reloading"
 require "mongoid/safety"
 require "mongoid/scope"
@@ -146,4 +147,14 @@ module Mongoid #:nodoc
   delegate *(Config.public_instance_methods(false) +
     ActiveModel::Observing::ClassMethods.public_instance_methods(false) <<
     { :to => Config })
+    
+  # Allow read preference methods accessed through the Mongoid module directly.
+  #
+  # @example Delegate the read preference methods.
+  #   Mongoid.with_primary do 
+  #     ... some database queries
+  #   end
+  #
+  # @since 2.10.0
+  delegate :with_primary, :with_secondary, :to => ReadPreference
 end
