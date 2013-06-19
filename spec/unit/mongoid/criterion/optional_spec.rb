@@ -567,6 +567,39 @@ describe Mongoid::Criterion::Optional do
       end
 
     end
+    
+    describe "#read" do
+      
+      context "when value provided" do
+
+        let(:criteria) do
+          base.read(:primary)
+        end
+
+        it "adds the read preference to the options" do
+          criteria.options.should == { :read => :primary }
+        end
+      end
+
+      it "returns a copy" do
+        base.read(:primary).should_not eql(base)
+      end
+      
+    end
+    
+    [:primary, :secondary, :nearest, :primary_preferred, :secondary_preferred].each do |preference|
+      describe "##{preference}" do
+      
+        let(:criteria) do
+          base.send(preference)
+        end
+
+        it "adds the read preference to the options" do
+          criteria.options.should == { :read => preference}
+        end
+        
+      end
+    end
 
     context "when field names and direction specified" do
 

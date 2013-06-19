@@ -182,7 +182,7 @@ module Mongoid #:nodoc:
       end
       
       # Adds a criterion to the +Criteria+ that specifies the 
-      # destination server. 
+      # read preference. 
       
       # @example Read from primary.
       #   criteria.read(:primary)
@@ -194,8 +194,8 @@ module Mongoid #:nodoc:
         clone.tap { |crit| crit.options[:read] = value }
       end
       
-      # Adds a criterion to the +Criteria+ that specifies primary as
-      # destination server. 
+      # Adds a criterion to the +Criteria+ that specifies :primary as
+      # read preference. 
       # @example Read from primary.
       #   criteria.primary
       #
@@ -204,14 +204,44 @@ module Mongoid #:nodoc:
         read(:primary)
       end
       
-      # Adds a criterion to the +Criteria+ that specifies secondary as
-      # destination server. 
-      # @example Read from primary.
-      #   criteria.primary
+      # Adds a criterion to the +Criteria+ that specifies :secondary as
+      # read preference. 
+      # @example Read from secondary.
+      #   criteria.secondary
       #
       # @return [ Criteria ] The cloned criteria.
       def secondary
         read(:secondary)
+      end
+      
+      # Adds a criterion to the +Criteria+ that specifies :secondary_preferred as
+      # read preference. 
+      # @example Read from secondary if available.
+      #   criteria.secondary_preferred
+      #
+      # @return [ Criteria ] The cloned criteria.
+      def secondary_preferred
+        read(:secondary_preferred)
+      end
+      
+      # Adds a criterion to the +Criteria+ that specifies :primary_preferred as
+      # read preference. 
+      # @example Read from primary if available.
+      #   criteria.primary_preferred
+      #
+      # @return [ Criteria ] The cloned criteria.
+      def primary_preferred
+        read(:primary_preferred)
+      end
+      
+      # Adds a criterion to the +Criteria+ that specifies :nearest as
+      # read preference. 
+      # @example Read from nearest.
+      #   criteria.nearest
+      #
+      # @return [ Criteria ] The cloned criteria.
+      def nearest
+        read(:nearest)
       end
       
       private

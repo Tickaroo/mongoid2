@@ -40,7 +40,10 @@ module Mongoid #:nodoc
     # @return [ Cursor ] The results.
     def find(selector = {}, options = {})
       ReadPreference.merge_options!(options)
-      cursor = Mongoid::Cursor.new(klass, self, master(options).find(selector, options))
+
+      mongodb_cursor = handle_try_secondary(options) { master(options).find(selector, options) }
+      cursor = Mongoid::Cursor.new(klass, self, mongodb_cursor)
+      
       if block_given?
         yield cursor; cursor.close
       else
@@ -59,7 +62,8 @@ module Mongoid #:nodoc
     # @return [ Document, nil ] A matching document or nil if none found.
     def find_one(selector = {}, options = {})
       ReadPreference.merge_options!(options)
-      master(options).find_one(selector, options)
+      #master(options).find_one(selector, options)
+      handle_try_secondary(options){ master(options).find_one(selector, options) }
     end
 
     # Initialize a new Mongoid::Collection, setting up the master, slave, and
@@ -154,6 +158,29 @@ module Mongoid #:nodoc
 
     def drop(*args)
       @master = nil if master.drop
+    end
+    
+    private
+    
+    # Handles the read option :try_secondary, which is not a 
+    # default mongodb read preference. 
+    #
+    # @example Find a Document.
+    #   handle_try_secondary(options) { master(options).find(selector, options) }
+    #
+    # @return [ ? ] Block Result with manipulated options.
+    def handle_try_secondary(options)
+      if options[:read] == :try_secondary
+        options[:read] = :secondary_preferred
+        result = yield
+        if result.blank? || (result.is_a?(Mongo::Cursor) && !result.try(:has_next?)) 
+          options[:read] = :primary
+          result = yield
+        end
+      else
+        result = yield
+      end
+      result
     end
   end
 end

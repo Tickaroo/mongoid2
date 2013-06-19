@@ -68,12 +68,12 @@ describe Mongoid::Collection do
 
     before do
       @cursor = stub.quacks_like(Mongoid::Cursor.allocate)
-      Mongoid::Cursor.expects(:new).with(Person, collection, @mongo_cursor).returns(@cursor)
     end
 
     context "when no block supplied" do
 
       before do
+        Mongoid::Cursor.expects(:new).with(Person, collection, @mongo_cursor).returns(@cursor)
         master.expects(:find).with({ :test => "value" }, {}).returns(@mongo_cursor)
       end
 
@@ -86,6 +86,7 @@ describe Mongoid::Collection do
     context "when a block is supplied" do
 
       before do
+        Mongoid::Cursor.expects(:new).with(Person, collection, @mongo_cursor).returns(@cursor)
         master.expects(:find).with({ :test => "value" }, {}).returns(@mongo_cursor)
       end
 
@@ -100,12 +101,29 @@ describe Mongoid::Collection do
     context "when an enslave option does not exist" do
 
       before do
+        Mongoid::Cursor.expects(:new).with(Person, collection, @mongo_cursor).returns(@cursor)
         master.expects(:find).with({ :test => "value" }, {}).returns(@mongo_cursor)
       end
 
       it "sends the query to the master" do
         collection.find({ :test => "value"}).should == @cursor
       end
+    end
+    
+    context "when read preference is set to :try_secondary" do
+      
+      before do
+        @mongo_cursor1 = stub(:has_next? => false, :is_a? => true)
+        @mongo_cursor2 = stub
+        master.expects(:find).with({ :test => "value" }, { :read => :secondary_preferred}).returns(@mongo_cursor1)
+        master.expects(:find).with({ :test => "value" }, { :read => :primary}).returns(@mongo_cursor2)
+        Mongoid::Cursor.expects(:new).with(Person, collection, @mongo_cursor2).returns(@cursor)
+      end
+      
+      it "should find item on primary if not on secondary" do
+        collection.find({ :test => "value"}, { :read => :try_secondary }).should == @cursor
+      end
+      
     end
   end
 
@@ -124,6 +142,20 @@ describe Mongoid::Collection do
       it "sends the query to the master" do
         collection.find_one({ :test => "value"}).should == @person
       end
+    end
+    
+    context "when read preference is set to :try_secondary" do
+      
+      before do
+        @mongo_cursor2 = stub
+        master.expects(:find_one).with({ :_id => "1" }, { :read => :secondary_preferred}).returns(nil)
+        master.expects(:find_one).with({ :_id => "1" }, { :read => :primary}).returns(@mongo_cursor2)
+      end
+      
+      it "should find item on primary if not on secondary" do
+        collection.find_one({ :_id => "1" }, { :read => :try_secondary }).should == @mongo_cursor2
+      end
+      
     end
   end
 

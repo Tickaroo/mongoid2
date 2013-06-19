@@ -9,7 +9,9 @@ This is a fork of Mongoid 2.7.
 Changes:
 
 * Update options for write concerns (:safe => true -> :w => 1)
-* Add Criteria to specifiy read parameter(:primary, :secondary)
+* Add Criteria to specifiy read preference(:primary, :secondary, :primary_preferred, :secondary_preferred, :nearest)
+* Add a custom read preference (:try_secondary)
+
 
 About Mongoid
 -------------

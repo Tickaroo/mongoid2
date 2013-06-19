@@ -49,6 +49,45 @@ module Mongoid #:nodoc:
       end
     end
     
+    # Accepts a block. All Database queries within the block will be executed 
+    # preferred on a secondary Cluster Node.
+    #
+    # @example Set the read preference to primary
+    #   Mongoid.with_secondary_preferred do 
+    #     ... some database queries
+    #   end
+    def with_secondary_preferred
+      with_read_preference(:secondary_preferred) do
+        yield
+      end
+    end
+    
+    # Accepts a block. All Database queries within the block will be executed 
+    # preferred on a primary Cluster Node.
+    #
+    # @example Set the read preference to primary
+    #   Mongoid.with_primary_preferred do 
+    #     ... some database queries
+    #   end
+    def with_primary_preferred
+      with_read_preference(:primary_preferred) do
+        yield
+      end
+    end
+    
+    # Accepts a block. All Database queries within the block will be executed 
+    # on a nearest Cluster Node.
+    #
+    # @example Set the read preference to primary
+    #   Mongoid.with_nearest do 
+    #     ... some database queries
+    #   end
+    def with_nearest
+      with_read_preference(:nearest) do
+        yield
+      end
+    end
+    
     # Check if a read preference is set and reverse merge it into the given hash. 
     #
     # @example Merge Options
@@ -57,7 +96,7 @@ module Mongoid #:nodoc:
     # @param [ Hash ] options An options Hash.
     #
     # @return [ Hash ] A merged options Hash.
-    def merge_options!(options)
+    def merge_options!(options = {})
       if Threaded.read_preference
         options[:read] = Threaded.read_preference unless options[:read]
       end

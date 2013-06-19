@@ -156,5 +156,5 @@ module Mongoid #:nodoc
   #   end
   #
   # @since 2.10.0
-  delegate :with_primary, :with_secondary, :with_read_preference, :to => ReadPreference
+  delegate :with_primary, :with_secondary, :with_read_preference, :with_primary_preferred, :with_secondary_preferred, :with_nearest, :to => ReadPreference
 end

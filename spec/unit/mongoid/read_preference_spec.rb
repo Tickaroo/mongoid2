@@ -19,23 +19,25 @@ describe Mongoid::ReadPreference do
     end
   end
   
-  context "with_primary" do
-    it "should set Threaded.read_preference within the block to primary" do
+  context "with_read_preference" do
+    it "should set Threaded.read_preference within the block to given preference" do
       Mongoid::Threaded.read_preference.should eq(nil)
-      Mongoid.with_primary do 
+      Mongoid.with_read_preference(:primary) do 
         Mongoid::Threaded.read_preference.should eq(:primary)
       end
       Mongoid::Threaded.read_preference.should eq(nil)
-    end
+    end 
   end
   
-  context "with_secondary" do
-    it "should set Threaded.read_preference within the block to secondary" do
-      Mongoid::Threaded.read_preference.should eq(nil)
-      Mongoid.with_secondary do 
-        Mongoid::Threaded.read_preference.should eq(:secondary)
+  [:primary, :secondary, :primary_preferred, :secondary_preferred, :nearest].each do |preference|
+    context "with_#{preference}" do
+      it "should set Threaded.read_preference within the block to #{preference}" do
+        Mongoid::Threaded.read_preference.should eq(nil)
+        Mongoid.send("with_#{preference}") do 
+          Mongoid::Threaded.read_preference.should eq(preference)
+        end
+        Mongoid::Threaded.read_preference.should eq(nil)
       end
-      Mongoid::Threaded.read_preference.should eq(nil)
     end
   end
 
