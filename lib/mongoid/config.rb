@@ -2,7 +2,6 @@
 require "uri"
 require "mongoid/config/database"
 require "mongoid/config/environment"
-require "mongoid/config/replset_database"
 require "mongoid/config/options"
 
 module Mongoid #:nodoc
@@ -284,11 +283,7 @@ module Mongoid #:nodoc
     #
     # @since 2.0.0.rc.1
     def configure_databases(options)
-      if options.has_key?('hosts')
-        ReplsetDatabase.new(options).configure
-      else
-        Database.new(options).configure
-      end
+      Database.new(options).configure
     end
 
     # Get the secondary databases from settings.

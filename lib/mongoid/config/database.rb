@@ -68,7 +68,11 @@ module Mongoid #:nodoc:
       def build_uri(options = {})
         "mongodb://".tap do |base|
           base << "#{username}:#{password}@" if authenticating?
-          base << "#{options["host"] || "localhost"}:#{options["port"] || 27017}"
+          if options["hosts"]
+            base << options["hosts"].join(",")
+          else
+            base << "#{options["host"] || "localhost"}:#{options["port"] || 27017}"
+          end
           base << "/#{self["database"]}" if authenticating?
         end
       end
@@ -99,7 +103,7 @@ module Mongoid #:nodoc:
       # @since 2.0.0.rc.1
       def slaves
         (self["slaves"] || []).map do |options|
-          Mongo::Connection.from_uri(uri(options), optional(true).symbolize_keys).tap do |conn|
+          Mongo::Connection.from_uri(uri(options), optional.merge(:slave_ok => true).symbolize_keys).tap do |conn|
             conn.apply_saved_authentication
           end
         end
@@ -140,8 +144,12 @@ module Mongoid #:nodoc:
       #
       # @since 2.0.0.rc.1
       def name
-        db_name = URI.parse(uri(self)).path.to_s.sub("/", "")
-        db_name.blank? ? database : db_name
+        match = /(?:\/\/.*)\/([-\w]+)/.match(uri(self))
+        if match
+          match[1]
+        else
+          database
+        end
       end
 
       # Get the options used in creating the database connection.
@@ -157,8 +165,7 @@ module Mongoid #:nodoc:
       def optional(slave = false)
         ({
           :pool_size => pool_size,
-          :logger => logger? ? Mongoid::Logger.new : nil,
-          :slave_ok => slave
+          :logger => logger? ? Mongoid::Logger.new : nil
         }).merge(self).reject { |k,v| Config.blacklisted_options.include? k }.
           inject({}) { |memo, (k, v)| memo[k.to_sym] = v; memo}
       end
