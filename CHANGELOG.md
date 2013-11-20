@@ -3,6 +3,17 @@
 For instructions on upgrading to newer versions, visit
 [mongoid.org](http://mongoid.org/docs/upgrading.html).
 
+
+## 2.9.0.tik
+
+* Rails 4 support (all tests passing)
+
+* Update options for write concerns (:safe => true -> :w => 1)
+
+* Add Criteria to specifiy read preference(:primary, :secondary, :primary_preferred, :secondary_preferred, :nearest)
+
+* Add a custom read preference (:try_secondary)
+
 ## 2.8.1
 
 * Mongoid now requires Ruby driver ~> 1.9.

@@ -28,6 +28,9 @@ require "active_support/inflector"
 require "active_support/lazy_load_hooks"
 require "active_support/time_with_zone"
 require "active_model"
+require 'rails/observers/active_model'
+require "active_model/mass_assignment_security"
+
 require "mongo"
 require "mongoid/extensions"
 require "mongoid/errors"

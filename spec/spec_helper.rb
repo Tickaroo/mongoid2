@@ -101,3 +101,15 @@ end
 ActiveSupport::Inflector.inflections do |inflect|
   inflect.singular("address_components", "address_component")
 end
+
+class BacktraceCleanerMock
+  def clean(bt)
+    bt
+  end
+end
+
+module Rails
+  def self.backtrace_cleaner
+    @bt ||= BacktraceCleanerMock.new
+  end
+end
