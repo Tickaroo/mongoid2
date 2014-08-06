@@ -10,7 +10,7 @@ describe Mongoid::Collection do
         described_class.new(
           Person,
           "capped_people",
-          :capped => true, :size => 10000, :max => 100
+          :capped => true, :size => 10240, :max => 100
         )
       end
 
@@ -23,7 +23,8 @@ describe Mongoid::Collection do
       end
 
       it "sets the capped size" do
-        options["size"].should eq(10000)
+        puts capped.options.inspect
+        options["size"].should eq(10240)
       end
 
       it "sets the max capped documents" do
