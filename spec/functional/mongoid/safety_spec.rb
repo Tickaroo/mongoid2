@@ -55,7 +55,7 @@ describe Mongoid::Safety do
         context "when using .safely(:w => 0)" do
 
           it "should ignore mongodb error" do
-            Person.safely(false).create(:ssn => "432-97-1111").should be_truthy
+            Person.safely(:w => 0).create(:ssn => "432-97-1111").should be_truthy
           end
 
         end
