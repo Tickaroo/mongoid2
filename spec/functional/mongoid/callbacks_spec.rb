@@ -29,7 +29,7 @@ describe Mongoid::Callbacks do
         end
 
         it "does not cascade to the child" do
-          band.run_callbacks(:rearrange).should be_truthy
+          band.run_callbacks(:rearrange).should be_nil
         end
       end
     end

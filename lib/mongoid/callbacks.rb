@@ -54,7 +54,8 @@ module Mongoid #:nodoc:
     # @since 2.3.0
     def run_callbacks(kind, *args, &block)
       cascadable_children(kind).each do |child|
-        unless child.run_callbacks(child_callback_type(kind, child), *args)
+        #CHANGE: mgro chech explicit for false because of change in activemodel 4.1.x
+        if child.run_callbacks(child_callback_type(kind, child), *args) == false
           return false
         end
       end

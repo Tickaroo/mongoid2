@@ -4,6 +4,10 @@ For instructions on upgrading to newer versions, visit
 [mongoid.org](http://mongoid.org/docs/upgrading.html).
 
 
+##2.9.0.tik2
+
+* ActiveModel 4.1.x support
+
 ## 2.9.0.tik
 
 * Rails 4 support (all tests passing)
